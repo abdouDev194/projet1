@@ -1,9 +1,10 @@
 pipeline {
     agent {
         docker {
-            //image/include 
-            //image 'cypress/browsers:node-24.11.1-chrome-142.0.7444.162-1-ff-145.0-edge-142.0.3595.65-1'
-            image 'cypress/included:13.6.6'
+            // ✅ CORRECTION 1 : Image mise à jour pour supporter Node.js >= 22
+            // Ceci corrige les avertissements npm WARN EBADENGINE.
+            // Cette image utilise Node.js 24.
+            image 'cypress/browsers:node-24.11.1-chrome-126'
             args '--entrypoint ""'
         }
     }
@@ -14,9 +15,11 @@ pipeline {
                 sh 'CYPRESS_INSTALL_BINARY=0 npm install' 
             }
         } 
-        //uygytfta
+        
         stage('Run cypress tests') {
             steps {
+                // ✅ CORRECTION 2 : Ajout de chmod +x pour résoudre "Permission denied" (exit code 126)
+                sh 'chmod +x cypress/batch/login_only.sh'
                 sh 'cypress/batch/login_only.sh'
             }
         }
