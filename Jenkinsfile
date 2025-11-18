@@ -2,30 +2,35 @@ pipeline {
     agent {
         docker {
             image 'cypress/included:13.6.6'
-            // NOTE: J'ai retiré l'entréepoint car elle n'est généralement pas nécessaire
-            // avec l'image cypress/included:13.6.6. Si vous avez des problèmes de
-            // permission, remplacez-la par args '-u root'.
-            // args '--entrypoint=""' 
+            args '-u root'
         }
     }
     stages {
-        stage('Install Dependencies') {
+        stage('Install, Prepare, and Install Binary') {
             steps {
-                // Installe uniquement les dépendances NPM de votre projet (reporter, plugins, etc.)
                 sh 'npm install'
+                sh 'npx cypress install' 
+                sh 'mkdir -p cypress/results' 
             }
         }
+        
         stage('Run Cypress and Generate Report') {
             steps {
-                // Exécute les tests Cypress et génère le rapport JUnit dans le dossier 'cypress/results'
+                // Exécute les tests et génère le fichier XML dans cypress/results
                 sh 'npx cypress run --reporter junit --reporter-options "mochaFile=cypress/results/junit-[hash].xml,toConsole=true"'
+                
+                // 🚀 VERIFICATION : Lister le contenu du dossier de résultats
+                sh 'ls -l cypress/results' 
+                
+                // 💡 Astuce : Afficher le contenu du fichier (les 5 premières lignes)
+                sh 'head -n 5 cypress/results/*.xml'
             }
         }
+        
         stage('Publish JUnit Report') {
             steps {
-                // Publie le rapport JUnit que Jenkins peut analyser
+                // Tente de publier le rapport. S'il existe, l'étape passe.
                 junit 'cypress/results/*.xml'
-                // NOTE: Assurez-vous que le chemin ci-dessus correspond à celui dans la commande 'cypress run'
             }
         }
     }
