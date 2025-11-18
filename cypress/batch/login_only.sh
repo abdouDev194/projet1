@@ -1,0 +1,1 @@
+npx cypress run --spec="cypress/e2e/1-gentting-started/login.cy

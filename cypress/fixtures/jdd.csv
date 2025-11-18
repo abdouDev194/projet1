@@ -1,0 +1,4 @@
+
+name,pass,result
+standard_user,secret_sauce,ok
+wrong_user,wrong_pass,ko
