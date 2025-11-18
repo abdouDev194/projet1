@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'CYPRESS_INSTALL_BINARY npm install' 
+                sh 'CYPRESS_INSTALL_BINARY=0 npm install' 
             }
         } 
         //uygytfta
