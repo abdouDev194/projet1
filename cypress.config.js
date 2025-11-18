@@ -8,6 +8,7 @@ module.exports = defineConfig({
     mochaFile: 'results/my-test-output.xml',
     toConsole: true,
   },
+
   //reporter: 'cypress-mochawesome-reporter',
   e2e: {
     video:false,
