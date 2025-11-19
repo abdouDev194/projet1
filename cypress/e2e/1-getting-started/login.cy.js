@@ -34,7 +34,7 @@ describe("fonctionnalité d'authentification", () => {
     it("login with valid credentials",{tags:['@regression','@smoke']},() => {
         //cy c'est lui qui navigue sur le site (il clique, il tape, etc)
         // cibler un element
-        cy.get("#user-name").type("standard_user")
+        cy.get("#user-name").type("standard_user1")
         cy.get("#password").type("secret_sauce")
         cy.get("#login-button").click()
         cy.get("span.title").should("be.visible") //ça ou celui en dessous
